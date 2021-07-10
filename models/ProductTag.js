@@ -12,7 +12,7 @@ ProductTag.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    driver_id: {
+    product_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'product',

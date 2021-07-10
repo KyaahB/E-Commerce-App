@@ -43,10 +43,10 @@ router.post('/', (req, res) => {
   /* req.body should look like this...*/
   Tag.create({
     
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 1,
-      category_id: [1, 2, 3, 4]
+      product_name: "Basketball Jersey",
+      price: 100.00,
+      stock: 30,
+      category_id: [6]
     })
   Product.create(req.body)
     .then((product) => {

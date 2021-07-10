@@ -3,10 +3,10 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get('/', (req, res) => {
+
   // find all tags
   // be sure to include its associated Product data
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
     try {
       const tagData = await Tag.findAll({
         include: [{ model: Product }, { model: ProductTag }],
@@ -82,7 +82,7 @@ router.delete('/:id', (req, res) => {
     .catch((err) => res.json(err));
 });
 
-});
+
 
 module.exports = router; 
 
