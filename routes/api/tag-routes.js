@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Tag, Product, ProductTag } = require('../../models');
+const { Tag, Product } = require('../../models');
 
 // The `/api/tags` endpoint
 
@@ -9,7 +9,7 @@ const { Tag, Product, ProductTag } = require('../../models');
   router.get('/', async (req, res) => {
     try {
       const tagData = await Tag.findAll({
-        include: [{ model: Product }, { model: ProductTag }],
+        include: [{ model: Product }],
       });
       res.status(200).json(tagData);
     } catch (err) {
@@ -17,12 +17,12 @@ const { Tag, Product, ProductTag } = require('../../models');
     }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
   try {
-    const tagData =  Tag.findByPk(req.params.id, {
-      include: [{ model: Product }, { model: ProductTag }],
+    const tagData = await Tag.findByPk(req.params.id, {
+      include: [{ model: Product }],
     });
 
     if (!tagData) {
@@ -69,18 +69,25 @@ router.put('/:id', (req, res) => {
     .catch((err) => res.json(err));
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
-  Tag.destroy({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((deletedTag) => {
-      res.json(deletedTag);
-    })
-    .catch((err) => res.json(err));
-});
+  try {
+    const deletedTag = await Tag.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+  
+    if (!deletedTag) {
+      res.status(404).json({message: 'Tag deleted!'});
+      return;
+    }
+  
+    res.status(200).json(deletedTag);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+  });
 
 
 
